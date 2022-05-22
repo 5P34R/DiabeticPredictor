@@ -1,13 +1,9 @@
 from flask import Flask, render_template, request
 
 import pandas as pd
-import xlrd
 import sklearn
-import sys
-import re 
 from flask.logging import default_handler
 import openpyxl
-import os
 from openpyxl import load_workbook
 from sklearn.linear_model import LinearRegression
 from sklearn import metrics
@@ -79,7 +75,7 @@ def check():
 
 def appendDataToExcel(preg,bloodP,skinT, insulin, bmi,pedi, age,gluc):
 	
-	file = "C:\\Users\\Cyber\\Documents\\Code\\diabetes_data.xlsx"
+	file = "diabetes_data.xlsx"
 	new_row = [preg,bloodP,skinT, insulin,bmi,pedi,age,gluc]
 	wb = openpyxl.load_workbook(filename=file)
 	ws = wb['diabetes']
@@ -139,7 +135,6 @@ def predictDiabetes(predict_list):
 	col_names = ['Pregnancies', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age','Glucose']
 	# pima = pd.read_excel(database, names=col_names, engine='xlrd')
 	pima = pd.read_excel(database, names=col_names, engine='openpyxl')
-	breakpoint()
 	per = 0.55
 	plot = pd.DataFrame(col_names)
 	
