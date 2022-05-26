@@ -47,7 +47,7 @@ def detect():
 @app.route('/getdata', methods=['GET', 'POST'])
 def check():
 	foods = ['Burger', 'Beer', 'Pizza', 'Coffee','Apple','Potatoes','Pastry','Pasta','Mango','Chips','Salad']
-	preg = request.form.get('preganency')
+	preg = 0
 	bloodP =request.form.get('BloodPressure')
 	skinT = request.form.get('skinthickness')
 	insulin = request.form.get('insulin')
@@ -70,8 +70,6 @@ def check():
 	
 
 	return render_template('display_data.html', msg = msg,foods=foods,gluc=var)
-	
-	
 
 def appendDataToExcel(preg,bloodP,skinT, insulin, bmi,pedi, age,gluc):
 	
@@ -84,8 +82,6 @@ def appendDataToExcel(preg,bloodP,skinT, insulin, bmi,pedi, age,gluc):
 		ws.cell(row=row, column=col, value=entry)
 	wb.save(file)
 
-
-
 def precitMe(predict_list):
 
 	value = predictDiabetes(predict_list)
@@ -96,7 +92,6 @@ def precitMe(predict_list):
 	ws.cell(row=row, column=7).value = var
 
 	return var
-
 
 
 @app.route('/foodItem/detect', methods=['POST'])
@@ -124,12 +119,10 @@ def foodDetect():
 	
 		return render_template('final.html', calo = calorie,food = label,type="food_detect")
 		
-		
-
 	
 	
 def predictDiabetes(predict_list):
-	to_predict = np.array(predict_list).reshape(1, 6) 
+	to_predict = np.array(predict_list).reshape(1, 6)
 	database = openpyxl.load_workbook('diabetes_data.xlsx')
 
 	col_names = ['Pregnancies', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age','Glucose']
@@ -139,7 +132,7 @@ def predictDiabetes(predict_list):
 	plot = pd.DataFrame(col_names)
 	
 	zero_not_accepted = [ 'BloodPressure','SkinThickness', 'BMI', 'Insulin','Glucose']
-
+	# breakpoint()
 
 	for column in zero_not_accepted:
 		pima[column] = pima[column].replace(0, np.NaN)
